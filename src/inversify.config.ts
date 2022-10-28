@@ -7,6 +7,7 @@ import { GarbageCollect, Renderer, BucketRenderer, EventBus, Ticker, BuildModule
 import { AppFlowModel } from './model';
 import { AppView } from './views';
 import { Updatable } from './utils';
+import { UiControlPresenter } from './presenters';
 
 export interface AppConfig {
   readonly forUpdate: symbol | ServiceIdentifier<Updatable>;
@@ -21,13 +22,14 @@ export declare type ServiceIdentifier<T = unknown> = new (...args: any[]) => T;
 
 export const appConfig: AppConfig = {
   forUpdate: APP_TYPES.Renderer,
-  onBuild: [APP_TYPES.AppFlowModel],
+  onBuild: [APP_TYPES.AppFlowModel, APP_TYPES.UiControlPresenter],
   preInit: (appContainer) => {
     appContainer.bind(APP_TYPES.Renderer).to(Renderer).inSingletonScope();
     appContainer.bind(APP_TYPES.BucketRenderer).to(BucketRenderer).inSingletonScope();
     appContainer.bind(APP_TYPES.Ticker).toConstantValue(new Ticker({ ignoreFocusOff: true }));
 
     appContainer.bind(APP_TYPES.AppFlowModel).to(AppFlowModel).inSingletonScope();
+    appContainer.bind(APP_TYPES.UiControlPresenter).to(UiControlPresenter).inSingletonScope();
   },
   onInit: (appContainer) =>
     new Promise<void>((resolve) => {
@@ -35,9 +37,10 @@ export const appConfig: AppConfig = {
       appViewContainer
         .initialize()
         .then(() => {
-          const { slotMachine } = appViewContainer;
+          const { slotMachine, uiControlView } = appViewContainer;
 
           appContainer.bind(APP_TYPES.SlotMachine).toConstantValue(slotMachine);
+          appContainer.bind(APP_TYPES.UiControlView).toConstantValue(uiControlView);
         })
         .then(() => {
           appContainer.get<Renderer>(APP_TYPES.Renderer).addContainer(appViewContainer);
@@ -47,7 +50,13 @@ export const appConfig: AppConfig = {
           resolve();
         });
     }),
-  pushToGarbage: [APP_TYPES.Renderer, APP_TYPES.BucketRenderer, APP_TYPES.Ticker, APP_TYPES.AppFlowModel],
+  pushToGarbage: [
+    APP_TYPES.Renderer,
+    APP_TYPES.BucketRenderer,
+    APP_TYPES.Ticker,
+    APP_TYPES.AppFlowModel,
+    APP_TYPES.UiControlPresenter
+  ],
   onDestroy: (appContainer) => {
     const view = appContainer.get<AppView>(APP_TYPES.AppView);
     view.destroy();

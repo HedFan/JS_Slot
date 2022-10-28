@@ -15,12 +15,14 @@ import {
   SLOT_SIZE,
   SLOT_CONTAINER_Y_POSITION
 } from './slot-machine.config';
+import { Observable, Subject } from 'rxjs';
 
-export class SlotMachine extends PIXI.Container implements GarbageCollect {
+export class SlotMachine extends Container implements GarbageCollect {
   readonly name = 'slot-machine-container';
 
   private readonly _garbageBag = new GarbageBag();
   private readonly _reelsContainer = new Container();
+  private readonly _spinCompleteSubject$ = new Subject<{ data?: Array<number> }>();
   private _reelsStripe = new Map<number, Array<PIXI.Sprite>>();
   private _animationRunning = false;
   private _requestAnimation: number | undefined;
@@ -59,18 +61,22 @@ export class SlotMachine extends PIXI.Container implements GarbageCollect {
     return new Promise((resolve) =>
       Promise.all(allDone).then(() => {
         this._animationRunning = false;
+        this._spinCompleteSubject$.next({});
         resolve();
       })
     );
   }
 
+  get spinComplete$(): Observable<{ data?: Array<number> }> {
+    return this._spinCompleteSubject$;
+  }
+
   private startSpin(reelStripe: Array<Sprite>, index: number, result?: Array<number>): Promise<void> {
     const { spinDuration, spinSpeed, spinDelay } = SLOT_CONFIG;
     // todo
-    const randomSpeed = getRandom(3, 6);
-    const timeOnStart = roundToNearest(1, 140);
-    const timeOnStop = roundToNearest((70 * 5) / spinSpeed + index * spinDelay, 70);
-    const timeOnSpin = spinDuration * spinSpeed * randomSpeed;
+    const randomSpeed = getRandom(5, 6);
+    const timeOnStop = spinDuration - (2 - index) * spinDelay;
+    const timeOnSpin = spinDuration * spinSpeed * randomSpeed - (2 - index) * spinDelay;
 
     return new Promise<void>((resolve) => {
       new TWEEN.Tween({ time: 0 })
@@ -96,7 +102,6 @@ export class SlotMachine extends PIXI.Container implements GarbageCollect {
           this.updateSlotPosition(reelStripe, time);
         })
         .onComplete(() => {
-          reelStripe.forEach((el, index) => console.log(index, el.y));
           resolve();
         })
         .start();
