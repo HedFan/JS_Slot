@@ -35,7 +35,9 @@ export const appConfig: AppConfig = {
       appViewContainer
         .initialize()
         .then(() => {
-          // empty
+          const { slotMachine } = appViewContainer;
+
+          appContainer.bind(APP_TYPES.SlotMachine).toConstantValue(slotMachine);
         })
         .then(() => {
           appContainer.get<Renderer>(APP_TYPES.Renderer).addContainer(appViewContainer);

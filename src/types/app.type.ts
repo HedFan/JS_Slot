@@ -1,15 +1,16 @@
 export const APP_TYPES = {
+  // Components
   Renderer: Symbol('Renderer'),
   BucketRenderer: Symbol('BucketRenderer'),
   LoaderScreen: Symbol('LoaderScreen'),
   EventBus: Symbol('EventBus'),
   Ticker: Symbol('Ticker'),
+  SlotMachine: Symbol('SlotMachine'),
 
   AppFlowModel: Symbol('AppFlowModel'),
 
-  AppView: Symbol('AppView')
-
   // Views
+  AppView: Symbol('AppView')
 
   // Presenters
 };

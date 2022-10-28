@@ -1,1 +1,1 @@
-import { SlotMachine } from './slot-machine';
+export { SlotMachine } from './slot-machine';

@@ -52,7 +52,7 @@ module.exports = {
         compress: true,
         port: 7777
     },
-    watch: true,
+    watch: false,
     watchOptions: {
         aggregateTimeout: 1000,
         poll: true
