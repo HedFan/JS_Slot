@@ -16,7 +16,6 @@ import {
   SLOT_CONTAINER_Y_POSITION
 } from './slot-machine.config';
 import { Observable, Subject } from 'rxjs';
-import { GameAction } from '../../model/app-flow-model';
 
 export class SlotMachine extends Container implements GarbageCollect {
   readonly name = 'slot-machine-container';
@@ -76,9 +75,6 @@ export class SlotMachine extends Container implements GarbageCollect {
     const { spinDuration, spinSpeed, spinDelay } = SLOT_CONFIG;
     // todo
     const randomSpeed = getRandom(5, 6);
-    // const timeOnStart = roundToNearest(1, 140);
-    // // const timeOnStop = roundToNearest(spinDuration + index * spinDelay, 70);
-    // // const timeOnStop = roundToNearest((70 * 5) / spinSpeed + index * spinDelay, 70);
     const timeOnStop = spinDuration - (2 - index) * spinDelay;
     const timeOnSpin = spinDuration * spinSpeed * randomSpeed - (2 - index) * spinDelay;
 
@@ -106,7 +102,6 @@ export class SlotMachine extends Container implements GarbageCollect {
           this.updateSlotPosition(reelStripe, time);
         })
         .onComplete(() => {
-          // reelStripe.forEach((el, index) => console.log(index, el.y));
           resolve();
         })
         .start();

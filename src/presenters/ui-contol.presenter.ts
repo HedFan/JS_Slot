@@ -43,30 +43,6 @@ export class UiControlPresenter implements GarbageCollect {
   toggleButton(): void {
     this._iControlView.toggleButtonState();
   }
-  // const { action$ } = this._appFlowModel;
-  //     const { stateStartButton$ } = this._firstPartView;
-  //
-  //     this._garbageBag.completable$(stateStartButton$).subscribe((state) => this._appFlowModel.updateAction(state));
-  //
-  //     this._garbageBag
-  //       .completable$(action$)
-  //       .pipe(filter(({ state, action }) => action === ButtonAction.SHOW_VIEW && state === ButtonState.FIRST_MENU_BUTTON))
-  //       .subscribe(() => this._firstPartView.show());
-  //
-  //     this._garbageBag
-  //       .completable$(action$)
-  //       .pipe(filter(({ state, action }) => action === ButtonAction.HIDE_VIEW && state === ButtonState.FIRST_MENU_BUTTON))
-  //       .subscribe(() => this._firstPartView.hide());
-  //
-  //     this._garbageBag
-  //       .completable$(action$)
-  //       .pipe(
-  //         filter(
-  //           ({ state, action }) => action === ButtonAction.START_ANIMATION && state === ButtonState.FIRST_MENU_BUTTON
-  //         )
-  //       )
-  //       .subscribe(() => this._firstPartView.clickPlayButton());
-  //   }
 
   get clickSpinButton$(): Observable<void> {
     return this._iControlView.clickSpinButton$;

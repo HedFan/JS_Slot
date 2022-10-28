@@ -18,9 +18,7 @@ export class AppFlowModel implements GarbageCollect {
   private readonly _garbageBag = new GarbageBag();
   private readonly _actionSubject$ = new Subject<{ action?: GameAction }>();
 
-  constructor() {
-    // const { clickSpinButton$ } =
-  }
+  constructor() {}
 
   cleanGarbageCollect(): void {
     this._garbageBag.cleanGarbageCollect();
@@ -28,16 +26,9 @@ export class AppFlowModel implements GarbageCollect {
 
   call(action?: GameAction): void {
     this._actionSubject$.next({ action });
-    // if(action === GameAction.SPIN_START) {
-    //
-    // }
   }
 
   spinCompleted(): void {}
-  // updateAction(incomeState: ButtonState, incomeAction?: GameAction): Promise<void> {
-  //   this.call(incomeState, incomeAction);
-  //   return Promise.resolve();
-  // }
 
   get action$(): Observable<{ action?: GameAction }> {
     return this._actionSubject$;

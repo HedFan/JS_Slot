@@ -57,10 +57,6 @@ export class UiControlView extends Container implements GarbageCollect {
       this.updateButtonState();
       this.updateBalance(-1);
       this._clickSpinButtonSubject$.next();
-
-      // if (this._currentPage) {
-      //   this._startAnimationSubject$.next({ action: ButtonAction.START_ANIMATION, state: this._currentPage });
-      // }
     });
 
     this.addChild(this._spinButton);
