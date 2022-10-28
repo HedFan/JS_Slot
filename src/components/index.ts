@@ -4,4 +4,4 @@ export { BucketRenderer } from './bucketRenderer';
 export { globalEventBus, EventBus } from './eventBus';
 export { Ticker } from './ticker';
 export { BuildModuleLoader } from './buildModuleLoader';
-// export { SlotMachine } from './slot-machine';
+export { SlotMachine } from './slot-machine';
