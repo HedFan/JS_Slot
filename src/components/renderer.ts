@@ -1,23 +1,24 @@
 import { inject, injectable } from 'inversify';
+import { Container, autoDetectRenderer, settings } from 'pixi.js';
 
 import { APP_TYPES } from '../types';
 import { GarbageBag, GarbageCollect, BucketRenderer } from '../components';
-import { Size, TickerData, Updatable } from '../utils';
+import { TickerData, Updatable } from '../utils';
 
 export interface Renderer extends Updatable {}
 @injectable()
 export class Renderer implements GarbageCollect, Renderer {
   private readonly _garbageBag = new GarbageBag();
   private readonly _renderer: PIXI.CanvasRenderer | PIXI.Renderer;
-  private readonly _stage: PIXI.Container;
-  private readonly _appContainer: PIXI.Container;
+  private readonly _stage: Container;
+  private readonly _appContainer: Container;
 
   constructor(@inject(APP_TYPES.BucketRenderer) private readonly _bucketRenderer: BucketRenderer) {
     const { devicePixelRatio } = this._bucketRenderer;
 
-    PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
+    settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
 
-    this._renderer = PIXI.autoDetectRenderer({
+    this._renderer = autoDetectRenderer({
       width: window.innerWidth,
       height: window.innerHeight,
       resolution: devicePixelRatio,
@@ -27,10 +28,10 @@ export class Renderer implements GarbageCollect, Renderer {
       transparent: true
     });
 
-    this._stage = new PIXI.Container();
+    this._stage = new Container();
     this._stage.name = 'stage';
 
-    this._appContainer = new PIXI.Container();
+    this._appContainer = new Container();
     this._appContainer.name = 'root-content-container';
     this._stage.addChild(this._appContainer);
 
@@ -45,17 +46,7 @@ export class Renderer implements GarbageCollect, Renderer {
     this._renderer.render(this._stage);
   }
 
-  addContainer(container: PIXI.Container): void {
+  addContainer(container: Container): void {
     this._appContainer.addChild(container);
-  }
-
-  private resize(size: Size): void {
-    this._renderer.resize(size.width, size.height);
-    this._renderer.view.style.width = `${size.width}px`;
-    this._renderer.view.style.height = `${size.height}px`;
-
-    const { bucketPosition, scaleRatio } = this._bucketRenderer;
-    this._appContainer.scale.set(scaleRatio);
-    this._appContainer.position.set(bucketPosition.x, bucketPosition.y);
   }
 }

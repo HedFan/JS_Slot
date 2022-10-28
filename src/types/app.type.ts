@@ -1,3 +1,5 @@
+import { UiControlPresenter } from '../presenters';
+
 export const APP_TYPES = {
   // Components
   Renderer: Symbol('Renderer'),
@@ -10,7 +12,9 @@ export const APP_TYPES = {
   AppFlowModel: Symbol('AppFlowModel'),
 
   // Views
-  AppView: Symbol('AppView')
+  AppView: Symbol('AppView'),
+  UiControlView: Symbol('UiControlView'),
 
   // Presenters
+  UiControlPresenter: Symbol('UiControlPresenter')
 };

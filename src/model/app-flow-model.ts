@@ -3,39 +3,43 @@ import { Subject, Observable } from 'rxjs';
 
 import { GarbageBag, GarbageCollect } from '../components/garbage-bag';
 
-export declare const enum ButtonAction {
-  HIDE_VIEW = 'hide-view',
-  SHOW_VIEW = 'show-view',
-  START_ANIMATION = 'start-animation'
+export const enum ButtonState {
+  ACTIVE = 'active',
+  UN_ACTIVE = 'un-active'
 }
 
-export declare const enum ButtonState {
-  ACTIVE = 'active',
-  UN_ACTIVE = 'un-active',
-  FIRST_MENU_BUTTON = 'first-menu-button'
+export const enum GameAction {
+  SPIN_START = 'spin-start',
+  SPIN_COMPLETE = 'spin-complete'
 }
 
 @injectable()
 export class AppFlowModel implements GarbageCollect {
   private readonly _garbageBag = new GarbageBag();
-  private readonly _actionSubject$ = new Subject<{ state: ButtonState; action?: ButtonAction }>();
+  private readonly _actionSubject$ = new Subject<{ action?: GameAction }>();
 
-  constructor() {}
+  constructor() {
+    // const { clickSpinButton$ } =
+  }
 
   cleanGarbageCollect(): void {
     this._garbageBag.cleanGarbageCollect();
   }
 
-  call(state: ButtonState, action?: ButtonAction): void {
-    this._actionSubject$.next({ state, action });
+  call(action?: GameAction): void {
+    this._actionSubject$.next({ action });
+    // if(action === GameAction.SPIN_START) {
+    //
+    // }
   }
 
-  updateAction(incomeState: ButtonState, incomeAction?: ButtonAction): Promise<void> {
-    this.call(incomeState, incomeAction);
-    return Promise.resolve();
-  }
+  spinCompleted(): void {}
+  // updateAction(incomeState: ButtonState, incomeAction?: GameAction): Promise<void> {
+  //   this.call(incomeState, incomeAction);
+  //   return Promise.resolve();
+  // }
 
-  get action$(): Observable<{ state: ButtonState; action?: ButtonAction }> {
+  get action$(): Observable<{ action?: GameAction }> {
     return this._actionSubject$;
   }
 }
