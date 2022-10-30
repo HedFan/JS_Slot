@@ -79,6 +79,7 @@ export class AppFlowModel implements GarbageCollect {
         } else if (quantity === 1) {
           if (lineResult.some((value) => value === symbol)) {
             winResultData.push({ paytableIndex, winAmount, lineIndex });
+            return;
           }
         }
       });

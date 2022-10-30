@@ -29,6 +29,8 @@ export class UiControlView extends Container implements GarbageCollect {
 
   constructor() {
     super();
+
+    this.position.set(60, -30);
     const scaleSet = Math.min(window.innerWidth / 1500, 1);
     const { width, height } = SPIN_BUTTON_SIZE;
     this._spinButton = createButton('active-button', width, height);
@@ -43,7 +45,6 @@ export class UiControlView extends Container implements GarbageCollect {
 
     const balanceText = new Text('Balance:', { fill: 0xffffff, fontSize: 20 });
 
-    // todo make it bitmap
     this._dynamicBalanceText = new Text('100', { fill: 0xffffff, fontSize: 20 });
     this._dynamicBalanceText.x = BALANCE_TEXT_X_POSITION;
 

@@ -17,6 +17,7 @@ import {
   WinPosition
 } from './slot-machine.config';
 import { REEL_SYMBOLS } from './slot-machine.paytable';
+import { ANCHOR } from '../../views/views.config';
 
 export class SlotMachine extends Container implements GarbageCollect {
   readonly name = 'slot-machine-container';
@@ -65,6 +66,7 @@ export class SlotMachine extends Container implements GarbageCollect {
     return new Promise((resolve) =>
       Promise.all(allDone).then(() => {
         this._animationRunning = false;
+        this.cancelAnimationListener();
         this._sendResultSubject$.next(this._winPositions);
         resolve();
       })
@@ -165,7 +167,7 @@ export class SlotMachine extends Container implements GarbageCollect {
       const newStripes = REEL_SYMBOLS.slice(randomIndex).concat(REEL_SYMBOLS.slice(0, randomIndex));
       newStripes.forEach((symbolName, symbolIndex) => {
         const symbol = fromCacheAsSprite(symbolName);
-        symbol.anchor.set(0.5, 0.5);
+        symbol.anchor.set(ANCHOR);
         symbol.position.set(width / 2, symbolIndex * height);
         symbol.name = symbolName;
 

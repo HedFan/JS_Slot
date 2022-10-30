@@ -1,7 +1,3 @@
-import { SpinningPresenter, UiControlPresenter } from '../presenters';
-import { PaylinesView } from '../views/paylines.view';
-import { PaylinesPresenter } from '../presenters/paylines.presenter';
-
 export const APP_TYPES = {
   // Components
   Renderer: Symbol('Renderer'),
@@ -17,9 +13,11 @@ export const APP_TYPES = {
   AppView: Symbol('AppView'),
   PaylinesView: Symbol('PaylinesView'),
   UiControlView: Symbol('UiControlView'),
+  PaytableView: Symbol('PaytableView'),
 
   // Presenters
   UiControlPresenter: Symbol('UiControlPresenter'),
   PaylinesPresenter: Symbol('PaylinesPresenter'),
-  SpinningPresenter: Symbol('SpinningPresenter')
+  SpinningPresenter: Symbol('SpinningPresenter'),
+  PaytablePresenter: Symbol('PaytablePresenter')
 };

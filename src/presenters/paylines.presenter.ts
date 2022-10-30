@@ -3,7 +3,7 @@ import { injectable, inject, postConstruct } from 'inversify';
 import { APP_TYPES } from '../types';
 import { GarbageBag, GarbageCollect } from '../components';
 import { PaylinesView } from '../views';
-import { AppFlowModel, WinResultData } from '../model';
+import { AppFlowModel } from '../model';
 
 @injectable()
 export class PaylinesPresenter implements GarbageCollect {
@@ -17,10 +17,10 @@ export class PaylinesPresenter implements GarbageCollect {
 
     this._garbageBag.completable$(action$).subscribe((action) => {
       if (action.type === 'SPIN_START') {
-        this.hideAllLines();
+        this._paylinesView.hideAllLines();
       }
       if (action.type === 'SPIN_RESULT') {
-        this.showWinLines(action.data);
+        this._paylinesView.showWinLines(action.data);
       }
     });
   }
@@ -31,12 +31,4 @@ export class PaylinesPresenter implements GarbageCollect {
 
   @postConstruct()
   onInitialize(): void {}
-
-  hideAllLines(): void {
-    this._paylinesView.hideAllLines();
-  }
-
-  showWinLines(winData: Array<WinResultData>): void {
-    this._paylinesView.showWinLines(winData);
-  }
 }

@@ -2,7 +2,7 @@ import { Container } from 'pixi.js';
 
 import { GarbageBag, SlotMachine } from '../components';
 import { createSprites, unwrap } from '../utils';
-import { UiControlView, PaylinesView } from './index';
+import { UiControlView, PaylinesView, PaytableView } from './index';
 
 export class AppView extends Container {
   readonly name: string = 'app-view-container';
@@ -11,6 +11,7 @@ export class AppView extends Container {
   private _slotMachine: SlotMachine | undefined;
   private _paylinesView: PaylinesView | undefined;
   private _uiControlView: UiControlView | undefined;
+  private _paytableView: PaytableView | undefined;
 
   initialize(): Promise<void> {
     return new Promise((resolve) => {
@@ -19,14 +20,18 @@ export class AppView extends Container {
       this._slotMachine = new SlotMachine();
       this._paylinesView = new PaylinesView();
       this._uiControlView = new UiControlView();
+      this._paytableView = new PaytableView();
 
       this.addChild(this.paylinesView.reelBackgroundContainer);
       this.addChild(this.slotMachine);
       this.addChild(this.paylinesView.paylinesContainer);
       this.addChild(this.uiControlView);
+      this.addChild(this.paytableView);
 
       this._garbageBag.add(this.slotMachine);
       this._garbageBag.add(this.uiControlView);
+      this._garbageBag.add(this.paylinesView);
+      this._garbageBag.add(this.paylinesView);
 
       resolve();
     });
@@ -46,5 +51,9 @@ export class AppView extends Container {
 
   get uiControlView(): UiControlView {
     return unwrap(this._uiControlView, 'this._uiControlView is undefined');
+  }
+
+  get paytableView(): PaytableView {
+    return unwrap(this._paytableView, 'this._paytableView is undefined');
   }
 }

@@ -6,8 +6,7 @@ import { GarbageCollect, Renderer, BucketRenderer, EventBus, Ticker, BuildModule
 import { AppFlowModel } from './model';
 import { AppView } from './views';
 import { Updatable } from './utils';
-import { UiControlPresenter, SpinningPresenter } from './presenters';
-import { PaylinesPresenter } from './presenters/paylines.presenter';
+import { UiControlPresenter, SpinningPresenter, PaylinesPresenter, PaytablePresenter } from './presenters';
 
 export interface AppConfig {
   readonly forUpdate: symbol | ServiceIdentifier<Updatable>;
@@ -26,7 +25,8 @@ export const appConfig: AppConfig = {
     APP_TYPES.AppFlowModel,
     APP_TYPES.UiControlPresenter,
     APP_TYPES.PaylinesPresenter,
-    APP_TYPES.SpinningPresenter
+    APP_TYPES.SpinningPresenter,
+    APP_TYPES.PaytablePresenter
   ],
   preInit: (appContainer) => {
     appContainer.bind(APP_TYPES.Renderer).to(Renderer).inSingletonScope();
@@ -37,6 +37,7 @@ export const appConfig: AppConfig = {
     appContainer.bind(APP_TYPES.UiControlPresenter).to(UiControlPresenter).inSingletonScope();
     appContainer.bind(APP_TYPES.PaylinesPresenter).to(PaylinesPresenter).inSingletonScope();
     appContainer.bind(APP_TYPES.SpinningPresenter).to(SpinningPresenter).inSingletonScope();
+    appContainer.bind(APP_TYPES.PaytablePresenter).to(PaytablePresenter).inSingletonScope();
   },
   onInit: (appContainer) =>
     new Promise<void>((resolve) => {
@@ -44,11 +45,12 @@ export const appConfig: AppConfig = {
       appViewContainer
         .initialize()
         .then(() => {
-          const { slotMachine, paylinesView, uiControlView } = appViewContainer;
+          const { slotMachine, paylinesView, uiControlView, paytableView } = appViewContainer;
 
           appContainer.bind(APP_TYPES.SlotMachine).toConstantValue(slotMachine);
           appContainer.bind(APP_TYPES.PaylinesView).toConstantValue(paylinesView);
           appContainer.bind(APP_TYPES.UiControlView).toConstantValue(uiControlView);
+          appContainer.bind(APP_TYPES.PaytableView).toConstantValue(paytableView);
         })
         .then(() => {
           appContainer.get<Renderer>(APP_TYPES.Renderer).addContainer(appViewContainer);
@@ -65,6 +67,7 @@ export const appConfig: AppConfig = {
     APP_TYPES.AppFlowModel,
     APP_TYPES.UiControlPresenter,
     APP_TYPES.PaylinesPresenter,
+    APP_TYPES.SpinningPresenter,
     APP_TYPES.SpinningPresenter
   ],
   onDestroy: (appContainer) => {
