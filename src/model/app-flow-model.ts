@@ -1,9 +1,7 @@
 import { injectable } from 'inversify';
 import { Subject, Observable } from 'rxjs';
 
-import { GarbageBag, GarbageCollect } from '../components/garbage-bag';
-import { WinPosition } from '../components/slot-machine/slot-machine.config';
-import { paylinesConfig, REEL_SYMBOLS } from '../components/slot-machine/slot-machine.paytable';
+import { GarbageBag, GarbageCollect, WinPosition, paylinesConfig, REEL_SYMBOLS } from '../components';
 import { getNext, getPrev, repeat, unwrap } from '../utils';
 import { WinResultData, GameAction } from './app-flow-model.config';
 
@@ -85,7 +83,6 @@ export class AppFlowModel implements GarbageCollect {
         }
       });
     });
-    console.log('winResultData', winResultData);
     return winResultData;
   }
 }

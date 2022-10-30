@@ -1,4 +1,6 @@
 import { SpinningPresenter, UiControlPresenter } from '../presenters';
+import { PaylinesView } from '../views/paylines.view';
+import { PaylinesPresenter } from '../presenters/paylines.presenter';
 
 export const APP_TYPES = {
   // Components
@@ -13,9 +15,11 @@ export const APP_TYPES = {
 
   // Views
   AppView: Symbol('AppView'),
+  PaylinesView: Symbol('PaylinesView'),
   UiControlView: Symbol('UiControlView'),
 
   // Presenters
   UiControlPresenter: Symbol('UiControlPresenter'),
+  PaylinesPresenter: Symbol('PaylinesPresenter'),
   SpinningPresenter: Symbol('SpinningPresenter')
 };

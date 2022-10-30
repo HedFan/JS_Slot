@@ -1,15 +1,15 @@
 import { Container } from 'pixi.js';
 
-import { GarbageBag } from '../components';
+import { GarbageBag, SlotMachine } from '../components';
 import { createSprites, unwrap } from '../utils';
-import { SlotMachine } from '../components/slot-machine/slot-machine';
-import { UiControlView } from './ui-contol.view';
+import { UiControlView, PaylinesView } from './index';
 
 export class AppView extends Container {
   readonly name: string = 'app-view-container';
   private readonly _garbageBag = new GarbageBag();
 
   private _slotMachine: SlotMachine | undefined;
+  private _paylinesView: PaylinesView | undefined;
   private _uiControlView: UiControlView | undefined;
 
   initialize(): Promise<void> {
@@ -17,9 +17,12 @@ export class AppView extends Container {
       createSprites();
 
       this._slotMachine = new SlotMachine();
+      this._paylinesView = new PaylinesView();
       this._uiControlView = new UiControlView();
 
+      this.addChild(this.paylinesView.reelBackgroundContainer);
       this.addChild(this.slotMachine);
+      this.addChild(this.paylinesView.paylinesContainer);
       this.addChild(this.uiControlView);
 
       this._garbageBag.add(this.slotMachine);
@@ -35,6 +38,10 @@ export class AppView extends Container {
 
   get slotMachine(): SlotMachine {
     return unwrap(this._slotMachine, 'this._slotMachine is undefined');
+  }
+
+  get paylinesView(): PaylinesView {
+    return unwrap(this._paylinesView, 'this._paylinesView is undefined');
   }
 
   get uiControlView(): UiControlView {

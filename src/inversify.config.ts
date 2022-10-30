@@ -7,6 +7,7 @@ import { AppFlowModel } from './model';
 import { AppView } from './views';
 import { Updatable } from './utils';
 import { UiControlPresenter, SpinningPresenter } from './presenters';
+import { PaylinesPresenter } from './presenters/paylines.presenter';
 
 export interface AppConfig {
   readonly forUpdate: symbol | ServiceIdentifier<Updatable>;
@@ -21,7 +22,12 @@ export declare type ServiceIdentifier<T = unknown> = new (...args: any[]) => T;
 
 export const appConfig: AppConfig = {
   forUpdate: APP_TYPES.Renderer,
-  onBuild: [APP_TYPES.AppFlowModel, APP_TYPES.UiControlPresenter, APP_TYPES.SpinningPresenter],
+  onBuild: [
+    APP_TYPES.AppFlowModel,
+    APP_TYPES.UiControlPresenter,
+    APP_TYPES.PaylinesPresenter,
+    APP_TYPES.SpinningPresenter
+  ],
   preInit: (appContainer) => {
     appContainer.bind(APP_TYPES.Renderer).to(Renderer).inSingletonScope();
     appContainer.bind(APP_TYPES.BucketRenderer).to(BucketRenderer).inSingletonScope();
@@ -29,6 +35,7 @@ export const appConfig: AppConfig = {
 
     appContainer.bind(APP_TYPES.AppFlowModel).to(AppFlowModel).inSingletonScope();
     appContainer.bind(APP_TYPES.UiControlPresenter).to(UiControlPresenter).inSingletonScope();
+    appContainer.bind(APP_TYPES.PaylinesPresenter).to(PaylinesPresenter).inSingletonScope();
     appContainer.bind(APP_TYPES.SpinningPresenter).to(SpinningPresenter).inSingletonScope();
   },
   onInit: (appContainer) =>
@@ -37,9 +44,10 @@ export const appConfig: AppConfig = {
       appViewContainer
         .initialize()
         .then(() => {
-          const { slotMachine, uiControlView } = appViewContainer;
+          const { slotMachine, paylinesView, uiControlView } = appViewContainer;
 
           appContainer.bind(APP_TYPES.SlotMachine).toConstantValue(slotMachine);
+          appContainer.bind(APP_TYPES.PaylinesView).toConstantValue(paylinesView);
           appContainer.bind(APP_TYPES.UiControlView).toConstantValue(uiControlView);
         })
         .then(() => {
@@ -56,6 +64,7 @@ export const appConfig: AppConfig = {
     APP_TYPES.Ticker,
     APP_TYPES.AppFlowModel,
     APP_TYPES.UiControlPresenter,
+    APP_TYPES.PaylinesPresenter,
     APP_TYPES.SpinningPresenter
   ],
   onDestroy: (appContainer) => {

@@ -1,5 +1,6 @@
 import { Container, Graphics } from 'pixi.js';
 import { Sprite } from 'pixi.js-legacy';
+import { Observable, Subject } from 'rxjs';
 
 const TWEEN = require('@tweenjs/tween.js');
 
@@ -9,7 +10,6 @@ import {
   MASK_SIZE,
   MASK_POSITION,
   REEL_POSITION,
-  STRIPE_GRAPHIC_PARAMETERS,
   SLOT_CONFIG,
   SLOT_SIZE,
   MOVE_POSITIONS,
@@ -17,7 +17,6 @@ import {
   WinPosition
 } from './slot-machine.config';
 import { REEL_SYMBOLS } from './slot-machine.paytable';
-import { Observable, Subject } from 'rxjs';
 
 export class SlotMachine extends Container implements GarbageCollect {
   readonly name = 'slot-machine-container';
@@ -49,6 +48,7 @@ export class SlotMachine extends Container implements GarbageCollect {
 
   cleanGarbageCollect(): void {
     this._garbageBag.cleanGarbageCollect();
+    this.cancelAnimationListener();
   }
 
   spin(result: Array<WinPosition> = []): Promise<void> {
@@ -158,7 +158,6 @@ export class SlotMachine extends Container implements GarbageCollect {
   private buildReelStripe(): void {
     const { width, height } = SLOT_SIZE;
     repeat(3).map((stripeIndex) => {
-      const graphicStripe = this.drawStripe();
       const reelSymbols = new Array<Sprite>();
       const symbolsContainer = new Container();
 
@@ -169,14 +168,12 @@ export class SlotMachine extends Container implements GarbageCollect {
         symbol.anchor.set(0.5, 0.5);
         symbol.position.set(width / 2, symbolIndex * height);
         symbol.name = symbolName;
-        console.log(symbol.position.y);
 
         symbolsContainer.addChild(symbol);
         reelSymbols.push(symbol);
       });
-      graphicStripe.x = stripeIndex * width + 5;
       symbolsContainer.position.set(stripeIndex * width + 5, SYMBOLS_CONTAINER_Y_POSITION);
-      this._reelsContainer.addChild(graphicStripe, symbolsContainer);
+      this._reelsContainer.addChild(symbolsContainer);
       this._reelsSymbols.set(stripeIndex, reelSymbols);
       this._reelsStripe.set(stripeIndex, symbolsContainer);
     });
@@ -193,16 +190,6 @@ export class SlotMachine extends Container implements GarbageCollect {
     }
   }
 
-  private drawStripe(): Graphics {
-    // todo think about this shape
-    const stripe = new PIXI.Graphics();
-    const { x, y, width, height, radius } = STRIPE_GRAPHIC_PARAMETERS;
-    stripe.beginFill(0xffffff);
-    stripe.drawRoundedRect(x, y, width, height, radius);
-    stripe.endFill();
-    return stripe;
-  }
-
   private readonly spinAnimate = (time: number) => {
     if (!this._animationRunning) {
       return;
@@ -210,4 +197,11 @@ export class SlotMachine extends Container implements GarbageCollect {
     TWEEN.update(time);
     window.requestAnimationFrame(this.spinAnimate);
   };
+
+  private cancelAnimationListener(): void {
+    this._animationRunning = false;
+    if (this._requestAnimation !== undefined) {
+      cancelAnimationFrame(this._requestAnimation);
+    }
+  }
 }

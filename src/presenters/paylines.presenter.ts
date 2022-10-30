@@ -1,32 +1,26 @@
 import { injectable, inject, postConstruct } from 'inversify';
-import { Observable } from 'rxjs';
 
 import { APP_TYPES } from '../types';
 import { GarbageBag, GarbageCollect } from '../components';
-import { UiControlView } from '../views';
+import { PaylinesView } from '../views';
 import { AppFlowModel, WinResultData } from '../model';
 
 @injectable()
-export class UiControlPresenter implements GarbageCollect {
+export class PaylinesPresenter implements GarbageCollect {
   protected readonly _garbageBag = new GarbageBag();
 
   constructor(
-    @inject(APP_TYPES.UiControlView) private readonly _iControlView: UiControlView,
+    @inject(APP_TYPES.PaylinesView) private readonly _paylinesView: PaylinesView,
     @inject(APP_TYPES.AppFlowModel) private readonly _appFlowModel: AppFlowModel
   ) {
-    const { clickSpinButton$ } = this._iControlView;
     const { action$ } = this._appFlowModel;
 
-    this._garbageBag.completable$(clickSpinButton$).subscribe(() => {
-      this._appFlowModel.call({ type: 'SPIN_START' });
-    });
-
     this._garbageBag.completable$(action$).subscribe((action) => {
-      if (action.type === 'SPIN_COMPLETE') {
-        this.toggleButton();
+      if (action.type === 'SPIN_START') {
+        this.hideAllLines();
       }
       if (action.type === 'SPIN_RESULT') {
-        this.updateBalance(action.data);
+        this.showWinLines(action.data);
       }
     });
   }
@@ -38,11 +32,11 @@ export class UiControlPresenter implements GarbageCollect {
   @postConstruct()
   onInitialize(): void {}
 
-  toggleButton(): void {
-    this._iControlView.toggleButtonState();
+  hideAllLines(): void {
+    this._paylinesView.hideAllLines();
   }
 
-  updateBalance(winData: Array<WinResultData>): void {
-    this._iControlView.updateBalance(winData);
+  showWinLines(winData: Array<WinResultData>): void {
+    this._paylinesView.showWinLines(winData);
   }
 }
