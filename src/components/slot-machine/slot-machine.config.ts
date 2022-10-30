@@ -1,22 +1,20 @@
 import { Coordinates, Size } from '../../utils';
 
-// 0
-// 70
-// 140
+export interface WinPosition {
+  readonly nameSymbol: string;
+  readonly positionOnReel: number;
+}
 
-// 210
-// 140
-// 280
-// 350
-
-// 490
-// 560
-// 630
 export const SLOT_SIZE: Size = {
   width: 141,
-  height: 121
+  height: 141
 };
-export const SLOT_CONTAINER_Y_POSITION = -105;
+export enum MOVE_POSITIONS {
+  TOP = SLOT_SIZE.height,
+  MIDDLE = SLOT_SIZE.height / 2,
+  BOTTOM = 0
+}
+export const SYMBOLS_CONTAINER_Y_POSITION = -105;
 export const MASK_SIZE: Size = {
   width: 430,
   height: 300
@@ -31,7 +29,7 @@ export const REEL_POSITION: Coordinates = {
 };
 export const STRIPE_GRAPHIC_PARAMETERS = {
   x: 2,
-  y: 125,
+  y: 25,
   width: 135,
   height: 310,
   radius: 120
@@ -41,5 +39,3 @@ export const SLOT_CONFIG = {
   spinSpeed: 0.7,
   spinDelay: 500
 };
-
-export const REEL_STRIPES = ['symbol-3-bar', 'symbol-1-bar', 'symbol-2-bar', 'symbol-7', 'symbol-cherry'];

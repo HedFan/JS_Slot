@@ -1,1 +1,2 @@
-export { AppFlowModel, ButtonState, GameAction } from './app-flow-model';
+export { AppFlowModel } from './app-flow-model';
+export * from './app-flow-model.config';

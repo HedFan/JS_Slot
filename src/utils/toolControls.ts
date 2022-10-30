@@ -21,14 +21,10 @@ export function mod(value: number, module: number): number {
   return modExpression === -0 ? 0 : modExpression;
 }
 
-export function roundToNearest(value: number, multiple: number): number {
-  // todo
-  const roundToNearestExpression =
-    value <= 0 ? Math.floor(value / multiple) * multiple : Math.ceil(value / multiple) * multiple;
-  // const roundToNearestExpression = Math.ceil(value / multiple) * multiple;
-  return roundToNearestExpression === -0 ? 0 : roundToNearestExpression;
+export function getNext(current: number, max: number, base: number): number {
+  return current < max ? current + 1 : base;
 }
 
-export function resolveAll<T>(promises: ReadonlyArray<Promise<T>>): Promise<void> {
-  return new Promise<void>((resolve) => Promise.all(promises).then(() => resolve()));
+export function getPrev(current: number, max: number): number {
+  return current === 0 ? max : current - 1;
 }
