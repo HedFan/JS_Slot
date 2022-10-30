@@ -1,4 +1,4 @@
-import { UiControlPresenter } from '../presenters';
+import { SpinningPresenter, UiControlPresenter } from '../presenters';
 
 export const APP_TYPES = {
   // Components
@@ -16,5 +16,6 @@ export const APP_TYPES = {
   UiControlView: Symbol('UiControlView'),
 
   // Presenters
-  UiControlPresenter: Symbol('UiControlPresenter')
+  UiControlPresenter: Symbol('UiControlPresenter'),
+  SpinningPresenter: Symbol('SpinningPresenter')
 };

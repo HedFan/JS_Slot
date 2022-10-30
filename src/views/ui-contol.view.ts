@@ -1,14 +1,10 @@
 import { Subject, Observable, fromEvent } from 'rxjs';
 import { Container, Sprite, Text } from 'pixi.js';
 
-import { ButtonState } from '../model';
 import { GarbageBag, GarbageCollect } from '../components';
-import { fromCacheAsSprite, createButton, Coordinates } from '../utils';
+import { fromCacheAsSprite, createButton } from '../utils';
+import { BALANCE_POSITION, ButtonState } from './views.config';
 
-const BALANCE_POSITION: Coordinates = {
-  x: 150,
-  y: 400
-};
 export class UiControlView extends Container implements GarbageCollect {
   readonly name = 'ui-control-container';
   private readonly _garbageBag = new GarbageBag();
