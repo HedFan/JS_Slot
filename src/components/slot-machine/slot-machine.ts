@@ -12,10 +12,10 @@ import {
   SLOT_SIZE,
   MOVE_POSITIONS,
   SYMBOLS_CONTAINER_Y_POSITION,
-  WinPosition
+  WinPosition,
+  ANCHOR
 } from './slot-machine.config';
 import { REEL_SYMBOLS } from './slot-machine.paytable';
-import { ANCHOR } from '../../views/views.config';
 
 export class SlotMachine extends Container implements GarbageCollect {
   readonly name = 'slot-machine-container';
