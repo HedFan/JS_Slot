@@ -3,12 +3,16 @@ import { Subject, Observable } from 'rxjs';
 
 import { GarbageBag, GarbageCollect, WinPosition, paylinesConfig, REEL_SYMBOLS } from '../components';
 import { getNext, getPrev, repeat, unwrap } from '../utils';
-import { WinResultData, GameAction } from './app-flow-model.config';
+import { WinResultData, GameAction, DebugModeAction } from './app-flow-model.config';
 
 @injectable()
 export class AppFlowModel implements GarbageCollect {
   private readonly _garbageBag = new GarbageBag();
   private readonly _actionSubject$ = new Subject<GameAction>();
+  private readonly _debugActionSubject$ = new Subject<DebugModeAction>();
+
+  private _isDebugMode = false;
+  private _linesSpinResult: Array<Array<string>> | undefined;
 
   constructor() {}
 
@@ -20,17 +24,38 @@ export class AppFlowModel implements GarbageCollect {
     if (action.type === 'SPIN_COMPLETE') {
       const spinResult = this.spinResult(action.data);
       this._actionSubject$.next({ type: 'SPIN_RESULT', data: spinResult });
+      if (this._isDebugMode) {
+        this._debugActionSubject$.next({ type: 'SPIN_COMPLETE', data: this._linesSpinResult });
+      }
     }
     this._actionSubject$.next(action);
+  }
+
+  callDebugMode(action: DebugModeAction): void {
+    switch (action.type) {
+      case 'SWITCH_MODE':
+        this._isDebugMode = action.data;
+        break;
+      case 'UPDATE_BALANCE':
+        this._actionSubject$.next({ type: action.type, data: action.data });
+        break;
+      case 'SENT_MOCK_DATA':
+        this._actionSubject$.next({ type: 'SPIN_START', data: action.data });
+        break;
+    }
   }
 
   get action$(): Observable<GameAction> {
     return this._actionSubject$;
   }
 
+  get debugAction$(): Observable<DebugModeAction> {
+    return this._debugActionSubject$;
+  }
+
   private spinResult(action: Map<number, WinPosition>): Array<WinResultData> {
-    const linesSpinResult = this.parseSpinLinesResult(action);
-    return this.findWinResultData(linesSpinResult);
+    this._linesSpinResult = this.parseSpinLinesResult(action);
+    return this.findWinResultData(this._linesSpinResult);
   }
 
   private parseSpinLinesResult(action: Map<number, WinPosition>): Array<Array<string>> {

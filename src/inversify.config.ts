@@ -7,6 +7,7 @@ import { AppFlowModel } from './model';
 import { AppView } from './views';
 import { Updatable } from './utils';
 import { UiControlPresenter, SpinningPresenter, PaylinesPresenter, PaytablePresenter } from './presenters';
+import { DebugPresenter } from './debug';
 
 export interface AppConfig {
   readonly forUpdate: symbol | ServiceIdentifier<Updatable>;
@@ -26,7 +27,8 @@ export const appConfig: AppConfig = {
     APP_TYPES.UiControlPresenter,
     APP_TYPES.PaylinesPresenter,
     APP_TYPES.SpinningPresenter,
-    APP_TYPES.PaytablePresenter
+    APP_TYPES.PaytablePresenter,
+    APP_TYPES.DebugPresenter
   ],
   preInit: (appContainer) => {
     appContainer.bind(APP_TYPES.Renderer).to(Renderer).inSingletonScope();
@@ -38,6 +40,8 @@ export const appConfig: AppConfig = {
     appContainer.bind(APP_TYPES.PaylinesPresenter).to(PaylinesPresenter).inSingletonScope();
     appContainer.bind(APP_TYPES.SpinningPresenter).to(SpinningPresenter).inSingletonScope();
     appContainer.bind(APP_TYPES.PaytablePresenter).to(PaytablePresenter).inSingletonScope();
+    // debug
+    appContainer.bind(APP_TYPES.DebugPresenter).to(DebugPresenter).inSingletonScope();
   },
   onInit: (appContainer) =>
     new Promise<void>((resolve) => {
@@ -45,12 +49,14 @@ export const appConfig: AppConfig = {
       appViewContainer
         .initialize()
         .then(() => {
-          const { slotMachine, paylinesView, uiControlView, paytableView } = appViewContainer;
+          const { slotMachine, paylinesView, uiControlView, paytableView, debugView } = appViewContainer;
 
           appContainer.bind(APP_TYPES.SlotMachine).toConstantValue(slotMachine);
           appContainer.bind(APP_TYPES.PaylinesView).toConstantValue(paylinesView);
           appContainer.bind(APP_TYPES.UiControlView).toConstantValue(uiControlView);
           appContainer.bind(APP_TYPES.PaytableView).toConstantValue(paytableView);
+          // debug
+          appContainer.bind(APP_TYPES.DebugView).toConstantValue(debugView);
         })
         .then(() => {
           appContainer.get<Renderer>(APP_TYPES.Renderer).addContainer(appViewContainer);
@@ -68,7 +74,8 @@ export const appConfig: AppConfig = {
     APP_TYPES.UiControlPresenter,
     APP_TYPES.PaylinesPresenter,
     APP_TYPES.SpinningPresenter,
-    APP_TYPES.SpinningPresenter
+    APP_TYPES.SpinningPresenter,
+    APP_TYPES.DebugPresenter
   ],
   onDestroy: (appContainer) => {
     const view = appContainer.get<AppView>(APP_TYPES.AppView);

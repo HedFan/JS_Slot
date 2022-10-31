@@ -24,11 +24,15 @@ module.exports = {
         ],
     },
     resolve: {
-        extensions: ['.tsx', '.ts', '.js'],
+        extensions: ['.ts', '.js'],
+        fallback: {
+            path: require.resolve('path-browserify')
+        }
     },
     output: {
         filename: 'bundle.js',
         path: path.resolve(__dirname, 'dist'),
+        libraryExport: 'default'
     },
     plugins: [
         new HtmlWebpackPlugin({

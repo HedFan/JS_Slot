@@ -21,11 +21,19 @@ export class UiControlPresenter implements GarbageCollect {
     });
 
     this._garbageBag.completable$(action$).subscribe((action) => {
-      if (action.type === 'SPIN_COMPLETE') {
-        this._iControlView.toggleButtonState();
-      }
-      if (action.type === 'SPIN_RESULT') {
-        this._iControlView.updateBalance(action.data);
+      switch (action.type) {
+        case 'SPIN_COMPLETE':
+          this._iControlView.toggleButtonState();
+          break;
+        case 'SPIN_RESULT':
+          this._iControlView.updateBalance(action.data);
+          break;
+        case 'UPDATE_BALANCE':
+          this._iControlView.updateBalance(action.data.toString());
+          break;
+        case 'SPIN_START':
+          this._iControlView.updateStateButton();
+          break;
       }
     });
   }

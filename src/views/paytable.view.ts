@@ -1,4 +1,4 @@
-import { Container, Graphics, Sprite, Text } from 'pixi.js';
+import { Container, Graphics, Sprite, Text } from 'pixi.js-legacy';
 import TWEEN from '@tweenjs/tween.js';
 import { Tween } from '@tweenjs/tween.js';
 
@@ -101,7 +101,7 @@ export class PaytableView extends Container implements GarbageCollect {
       if (specialSign) {
         const signText = new Text(specialSign, { ...TEXT_STYLE, fontSize: 13 });
         signText.position.copyFrom(SIGN_POSITION);
-        const signBackground = new PIXI.Graphics();
+        const signBackground = new Graphics();
         const { x, y } = SIGN_BACKGROUND_POSITION;
         signBackground.beginFill(0x48213f).drawRect(x, y, signText.width + 9, 19);
         signBackground.endFill();
