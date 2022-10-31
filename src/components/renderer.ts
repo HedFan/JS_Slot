@@ -1,8 +1,7 @@
-import { inject, injectable } from 'inversify';
+import { injectable } from 'inversify';
 import { Container, autoDetectRenderer, settings } from 'pixi.js-legacy';
 
-import { APP_TYPES } from '../types';
-import { GarbageBag, GarbageCollect, BucketRenderer } from '../components';
+import { GarbageBag, GarbageCollect } from '../components';
 import { TickerData, Updatable } from '../utils';
 
 export interface Renderer extends Updatable {}
@@ -13,9 +12,7 @@ export class Renderer implements GarbageCollect, Renderer {
   private readonly _stage: Container;
   private readonly _appContainer: Container;
 
-  constructor(@inject(APP_TYPES.BucketRenderer) private readonly _bucketRenderer: BucketRenderer) {
-    const { devicePixelRatio } = this._bucketRenderer;
-
+  constructor() {
     settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
 
     this._renderer = autoDetectRenderer({

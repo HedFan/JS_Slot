@@ -11,7 +11,9 @@ import {
   SPIN_BUTTON_SIZE,
   BALANCE_TEXT_X_POSITION,
   MESSAGE_Y_POSITION,
-  WIN_TEXT_X_POSITION
+  WIN_TEXT_X_POSITION,
+  UI_VIEW_POSITION,
+  SCALE
 } from './views.config';
 import { WinResultData } from '../model';
 
@@ -30,15 +32,15 @@ export class UiControlView extends Container implements GarbageCollect {
   constructor() {
     super();
 
-    this.position.set(60, -30);
+    this.position.copyFrom(UI_VIEW_POSITION);
     const { width, height } = SPIN_BUTTON_SIZE;
     this._spinButton = createButton('active-button', width, height);
     this._spinButton.position.copyFrom(SPIN_BUTTON_POSITION);
-    this._spinButton.scale.set(0.5);
+    this._spinButton.scale.set(SCALE);
 
     this._unActiveSpinButton = fromCacheAsSprite('un-active-button');
     this._unActiveSpinButton.position.copyFrom(SPIN_BUTTON_POSITION);
-    this._unActiveSpinButton.scale.set(0.5);
+    this._unActiveSpinButton.scale.set(SCALE);
     this._unActiveSpinButton.visible = false;
     this._currentStateButton = ButtonState.ACTIVE;
 

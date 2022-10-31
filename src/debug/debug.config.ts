@@ -46,7 +46,7 @@ export const DEBUG_BUTTON: Coordinates = {
   y: 5
 };
 export const BACKGROUND_SIZE: Size = {
-  width: 520,
+  width: 450,
   height: 54
 };
 export const BUTTON_SIZE: Size = {
@@ -54,4 +54,4 @@ export const BUTTON_SIZE: Size = {
   height: 172
 };
 export const BUTTON_SCALE: number = 0.25;
-export const BACKGROUND_HEIGHT: number = 300;
+export const BACKGROUND_HEIGHT: number = 180;

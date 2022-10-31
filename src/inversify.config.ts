@@ -2,7 +2,7 @@ import { Container } from 'inversify';
 import 'reflect-metadata';
 
 import { APP_TYPES } from './types';
-import { GarbageCollect, Renderer, BucketRenderer, EventBus, Ticker, BuildModuleLoader } from './components';
+import { GarbageCollect, Renderer, EventBus, Ticker, BuildModuleLoader } from './components';
 import { AppFlowModel } from './model';
 import { AppView } from './views';
 import { Updatable } from './utils';
@@ -32,7 +32,6 @@ export const appConfig: AppConfig = {
   ],
   preInit: (appContainer) => {
     appContainer.bind(APP_TYPES.Renderer).to(Renderer).inSingletonScope();
-    appContainer.bind(APP_TYPES.BucketRenderer).to(BucketRenderer).inSingletonScope();
     appContainer.bind(APP_TYPES.Ticker).toConstantValue(new Ticker({ ignoreFocusOff: true }));
 
     appContainer.bind(APP_TYPES.AppFlowModel).to(AppFlowModel).inSingletonScope();
@@ -68,7 +67,6 @@ export const appConfig: AppConfig = {
     }),
   pushToGarbage: [
     APP_TYPES.Renderer,
-    APP_TYPES.BucketRenderer,
     APP_TYPES.Ticker,
     APP_TYPES.AppFlowModel,
     APP_TYPES.UiControlPresenter,

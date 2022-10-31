@@ -1,6 +1,7 @@
 import { Coordinates, Size } from '../utils';
 
 export const ANCHOR: number = 0.5;
+export const SCALE: number = 0.5;
 export const TEXT_STYLE = {
   fill: 0xffffff,
   fontSize: 18,
@@ -30,6 +31,10 @@ export const LINE_GRAPHIC_CONFIG = {
 };
 
 // ui control view
+export const UI_VIEW_POSITION: Coordinates = {
+  x: 60,
+  y: -30
+};
 export const SPIN_BUTTON_SIZE: Size = {
   width: 150,
   height: 150
@@ -62,6 +67,27 @@ export const PAYTABLE_CONTAINER_Y_POSITION: number = 50;
 export const PAYTABLE_POSITION: Coordinates = {
   x: 550,
   y: 20
+};
+export const BACKGROUND_SYMBOL_SIZE: Size = {
+  width: 180,
+  height: 50
+};
+export const BACKGROUND_AMOUNT_SIZE: Size = {
+  width: 80,
+  height: 50
+};
+export const BACKGROUND_SYMBOL_ALPHA: number = 0.55;
+export const SIGN_POSITION: Coordinates = {
+  x: -5,
+  y: -5
+};
+export const SIGN_BACKGROUND_POSITION: Coordinates = {
+  x: -11,
+  y: -8
+};
+export const AMOUNT_WIN_POSITION: Coordinates = {
+  x: 222,
+  y: 28
 };
 
 export interface Paytable {
@@ -116,24 +142,3 @@ export const PAYTABLE_VIEW_DATA: Array<Paytable> = [
     winAmount: 5
   }
 ];
-export const BACKGROUND_SYMBOL_SIZE: Size = {
-  width: 180,
-  height: 50
-};
-export const BACKGROUND_AMOUNT_SIZE: Size = {
-  width: 80,
-  height: 50
-};
-export const BACKGROUND_SYMBOL_ALPHA: number = 0.55;
-export const SIGN_POSITION: Coordinates = {
-  x: -5,
-  y: -5
-};
-export const SIGN_BACKGROUND_POSITION: Coordinates = {
-  x: -11,
-  y: -8
-};
-export const AMOUNT_WIN_POSITION: Coordinates = {
-  x: 222,
-  y: 28
-};

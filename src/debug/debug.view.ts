@@ -38,14 +38,7 @@ export class DebugView extends Container implements GarbageCollect {
 
   constructor() {
     super();
-    this._guiInfo = {
-      balance: 100,
-      save: () => this._sentBalanceSubject$.next(this._guiInfo.balance),
-      reels: 100
-    };
-    const guiReels = {
-      spin: () => sendSpin()
-    };
+    this.position.copyFrom(POSITION);
 
     const gui = new dat.GUI({ name: 'JS_Slot' });
     const container = gui.domElement.parentElement;
@@ -56,6 +49,14 @@ export class DebugView extends Container implements GarbageCollect {
       container.style.zIndex = '100';
       container.style.userSelect = 'none';
     }
+    this._guiInfo = {
+      balance: 100,
+      save: () => this._sentBalanceSubject$.next(this._guiInfo.balance),
+      reels: 100
+    };
+    const guiReels = {
+      spin: () => sendSpin()
+    };
     const firstReelFolder: ReelFolder = {
       reelIndex: 0,
       symbol: SymbolName.BAR,
@@ -132,8 +133,6 @@ export class DebugView extends Container implements GarbageCollect {
       this._spinWithResultSubject$.next(resultArray);
     };
 
-    this.position.copyFrom(POSITION);
-
     this._onButton = createButton('on-button', BUTTON_SIZE.width, BUTTON_SIZE.height);
     this._onButton.position.copyFrom(DEBUG_BUTTON);
     this._onButton.scale.set(BUTTON_SCALE);
@@ -145,7 +144,6 @@ export class DebugView extends Container implements GarbageCollect {
     this._isActiveButton = false;
 
     const clickButton$ = merge(fromEvent(this._onButton, 'pointerdown'), fromEvent(this._offButton, 'pointerdown'));
-
     this._garbageBag.completable$(clickButton$).subscribe(() => {
       this.toggleButton();
       this.updateView();
@@ -159,7 +157,7 @@ export class DebugView extends Container implements GarbageCollect {
 
     const staticResultText = new Text('Result:', TEXT_STYLE);
     staticResultText.y = RESULT_POSITION.y;
-    this._dynamicResult = new Text('', TEXT_STYLE);
+    this._dynamicResult = new Text('Spin and you`ll see the result here', TEXT_STYLE);
     this._dynamicResult.position.copyFrom(RESULT_POSITION);
 
     this._debugContainer.addChild(staticResultText, this._dynamicResult);
@@ -169,8 +167,6 @@ export class DebugView extends Container implements GarbageCollect {
     this.addChild(this._onButton);
     this.addChild(this._offButton);
     this.addChild(this._debugContainer);
-
-    this._garbageBag.add(gui);
   }
 
   cleanGarbageCollect(): void {
@@ -212,6 +208,6 @@ export class DebugView extends Container implements GarbageCollect {
     const isActive = this._isActiveButton;
     this._background.height = isActive ? BACKGROUND_HEIGHT : BACKGROUND_SIZE.height;
     this._debugContainer.visible = isActive;
-    this._dynamicResult.text = '';
+    this._dynamicResult.text = 'Spin and you`ll see the result here';
   }
 }
