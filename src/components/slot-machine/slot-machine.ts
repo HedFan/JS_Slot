@@ -1,7 +1,5 @@
-import { Container, Graphics } from 'pixi.js';
-import { Sprite } from 'pixi.js-legacy';
+import { Sprite, Container, Graphics } from 'pixi.js-legacy';
 import { Observable, Subject } from 'rxjs';
-
 const TWEEN = require('@tweenjs/tween.js');
 
 import { repeat, fromCacheAsSprite, getRandom, unwrap, mod } from '../../utils';

@@ -9,6 +9,10 @@ export const APP_TYPES = {
 
   AppFlowModel: Symbol('AppFlowModel'),
 
+  // debug
+  DebugPresenter: Symbol('DebugPresenter'),
+  DebugView: Symbol('DebugView'),
+
   // Views
   AppView: Symbol('AppView'),
   PaylinesView: Symbol('PaylinesView'),

@@ -1,5 +1,5 @@
 import { Subject, Observable, fromEvent } from 'rxjs';
-import { Container, Sprite, Text } from 'pixi.js';
+import { Container, Sprite, Text } from 'pixi.js-legacy';
 
 import { GarbageBag, GarbageCollect } from '../components';
 import { fromCacheAsSprite, createButton } from '../utils';
@@ -31,15 +31,14 @@ export class UiControlView extends Container implements GarbageCollect {
     super();
 
     this.position.set(60, -30);
-    const scaleSet = Math.min(window.innerWidth / 1500, 1);
     const { width, height } = SPIN_BUTTON_SIZE;
     this._spinButton = createButton('active-button', width, height);
     this._spinButton.position.copyFrom(SPIN_BUTTON_POSITION);
-    this._spinButton.scale.set(scaleSet);
+    this._spinButton.scale.set(0.5);
 
     this._unActiveSpinButton = fromCacheAsSprite('un-active-button');
     this._unActiveSpinButton.position.copyFrom(SPIN_BUTTON_POSITION);
-    this._unActiveSpinButton.scale.set(scaleSet);
+    this._unActiveSpinButton.scale.set(0.5);
     this._unActiveSpinButton.visible = false;
     this._currentStateButton = ButtonState.ACTIVE;
 
@@ -67,9 +66,6 @@ export class UiControlView extends Container implements GarbageCollect {
 
     const clickButton$ = fromEvent(this._spinButton, 'pointerdown');
     this._garbageBag.completable$(clickButton$).subscribe(() => {
-      this.updateButtonState();
-      this.updateBalance(-1);
-      this.updateWin(0);
       this._clickSpinButtonSubject$.next();
     });
 
@@ -87,7 +83,14 @@ export class UiControlView extends Container implements GarbageCollect {
     this.updateButtonState();
   }
 
-  updateBalance(winData: number | Array<WinResultData>): void {
+  updateBalance(winData: number | string | Array<WinResultData>): void {
+    if (typeof winData === 'string') {
+      this._dynamicBalanceText.text = winData;
+      if (this._currentStateButton === ButtonState.UN_ACTIVE) {
+        this.updateButtonState();
+      }
+      return;
+    }
     let amount = 0;
     if (typeof winData === 'number') {
       amount = winData;
@@ -96,6 +99,12 @@ export class UiControlView extends Container implements GarbageCollect {
       this.updateWin(amount);
     }
     this._dynamicBalanceText.text = (Number(this._dynamicBalanceText.text) + amount).toString();
+  }
+
+  updateStateButton(): void {
+    this.updateButtonState();
+    this.updateBalance(-1);
+    this.updateWin(0);
   }
 
   get clickSpinButton$(): Observable<void> {
@@ -107,6 +116,7 @@ export class UiControlView extends Container implements GarbageCollect {
       this._messageText.visible = true;
       return;
     }
+    this._messageText.visible = false;
     const isActive = this._currentStateButton === ButtonState.ACTIVE;
     this._spinButton.visible = !isActive;
     this._unActiveSpinButton.visible = isActive;

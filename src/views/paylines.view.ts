@@ -1,4 +1,4 @@
-import { Container, Graphics } from 'pixi.js';
+import { Container, Graphics } from 'pixi.js-legacy';
 
 import { repeat } from '../utils';
 import { GarbageBag, GarbageCollect, SLOT_SIZE } from '../components';
@@ -69,7 +69,7 @@ export class PaylinesView extends Container implements GarbageCollect {
 
   private drawReelBackground(): Graphics {
     // todo think about this shape
-    const stripe = new PIXI.Graphics();
+    const stripe = new Graphics();
     const { x, y, width, height, radius } = STRIPE_GRAPHIC_CONFIG;
     stripe.beginFill(0xffffff).drawRoundedRect(x, y, width, height, radius);
     stripe.endFill();
@@ -77,7 +77,7 @@ export class PaylinesView extends Container implements GarbageCollect {
   }
 
   private drawLine(index: number, isWinLine = false): Graphics {
-    const line = new PIXI.Graphics();
+    const line = new Graphics();
     const { width, height, winColor, bgColor } = LINE_GRAPHIC_CONFIG;
     line.lineStyle(height, isWinLine ? winColor : bgColor, 1, 0);
     line.drawRect(0, 0, width, height);

@@ -1,8 +1,9 @@
-import { Container } from 'pixi.js';
+import { Container } from 'pixi.js-legacy';
 
 import { GarbageBag, SlotMachine } from '../components';
 import { createSprites, unwrap } from '../utils';
 import { UiControlView, PaylinesView, PaytableView } from './index';
+import { DebugView } from '../debug';
 
 export class AppView extends Container {
   readonly name: string = 'app-view-container';
@@ -12,11 +13,12 @@ export class AppView extends Container {
   private _paylinesView: PaylinesView | undefined;
   private _uiControlView: UiControlView | undefined;
   private _paytableView: PaytableView | undefined;
+  // debug
+  private _debugView: DebugView | undefined;
 
   initialize(): Promise<void> {
     return new Promise((resolve) => {
       createSprites();
-
       this._slotMachine = new SlotMachine();
       this._paylinesView = new PaylinesView();
       this._uiControlView = new UiControlView();
@@ -32,6 +34,11 @@ export class AppView extends Container {
       this._garbageBag.add(this.uiControlView);
       this._garbageBag.add(this.paylinesView);
       this._garbageBag.add(this.paylinesView);
+
+      // debug
+      this._debugView = new DebugView();
+      this.addChild(this.debugView);
+      this._garbageBag.add(this._debugView);
 
       resolve();
     });
@@ -55,5 +62,10 @@ export class AppView extends Container {
 
   get paytableView(): PaytableView {
     return unwrap(this._paytableView, 'this._paytableView is undefined');
+  }
+
+  // debug
+  get debugView(): DebugView {
+    return unwrap(this._debugView, 'this._debugView is undefined');
   }
 }
