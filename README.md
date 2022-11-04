@@ -44,3 +44,11 @@ As a plan:
 
 ***
 ### You can try it from [here](https://hedfan.github.io/JS_Slot/) 
+
+***
+#### More description:
+
+###### Garbage bag
+The garbage bag needs to avoid memory leaks during error cases. Especially it could be useful for the whole game platform - if the garbage bag couches an error from the platform side, it can easily reload a game.
+This version here it’s more like a prototype.
+

@@ -1,4 +1,4 @@
-import { injectable, inject, postConstruct } from 'inversify';
+import { injectable, inject } from 'inversify';
 
 import { APP_TYPES } from '../types';
 import { GarbageBag, GarbageCollect } from '../components';
@@ -28,7 +28,4 @@ export class PaylinesPresenter implements GarbageCollect {
   cleanGarbageCollect(): void {
     this._garbageBag.cleanGarbageCollect();
   }
-
-  @postConstruct()
-  onInitialize(): void {}
 }
